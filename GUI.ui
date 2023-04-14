@@ -26,7 +26,7 @@
     <item>
      <layout class="QVBoxLayout" name="vLayout_visor">
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="title_label">
         <property name="font">
          <font>
           <pointsize>12</pointsize>
@@ -53,9 +53,9 @@
     <item>
      <layout class="QVBoxLayout" name="vLayout_slider">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+       <layout class="QHBoxLayout" name="hLayout_slider">
         <item>
-         <spacer name="horizontalSpacer">
+         <spacer name="hSpacer_sliderLeft">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -71,7 +71,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QSlider" name="horizontalSlider">
+         <widget class="QSlider" name="sliceSlider">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -87,7 +87,7 @@
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_2">
+         <spacer name="hSpacer_sliderRight">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -105,7 +105,7 @@
        </layout>
       </item>
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="slider_label">
         <property name="font">
          <font>
           <pointsize>12</pointsize>
@@ -132,7 +132,7 @@
        <number>12</number>
       </property>
       <item>
-       <widget class="QLabel" name="label_4">
+       <widget class="QLabel" name="load_label">
         <property name="font">
          <font>
           <pointsize>12</pointsize>
@@ -151,7 +151,7 @@
          <number>0</number>
         </property>
         <item>
-         <spacer name="horizontalSpacer_5">
+         <spacer name="hSpacer_loadLeft">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -167,17 +167,24 @@
          </spacer>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_2"/>
+         <widget class="QLineEdit" name="path_edit">
+          <property name="inputMask">
+           <string/>
+          </property>
+          <property name="placeholderText">
+           <string>Type path to MRI...</string>
+          </property>
+         </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="browse_button">
           <property name="text">
            <string>Browse</string>
           </property>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_4">
+         <spacer name="hSpacer_loadRight">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -195,7 +202,7 @@
        </layout>
       </item>
       <item>
-       <spacer name="verticalSpacer_4">
+       <spacer name="vSpacer_load">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
@@ -221,7 +228,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="label_3">
+       <widget class="QLabel" name="axis_label">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -233,7 +240,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Axis</string>
+         <string>Select view axis</string>
         </property>
         <property name="margin">
          <number>6</number>
@@ -241,12 +248,12 @@
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <layout class="QHBoxLayout" name="hLayout_cb">
         <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
-         <spacer name="horizontalSpacer_3">
+         <spacer name="hSpacer_cbLeft">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -262,14 +269,14 @@
          </spacer>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkBox_3">
+         <widget class="QCheckBox" name="axial_cb">
           <property name="text">
            <string>Axial</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkBox_2">
+         <widget class="QCheckBox" name="coronal_cb">
           <property name="enabled">
            <bool>true</bool>
           </property>
@@ -279,7 +286,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkBox">
+         <widget class="QCheckBox" name="sagital_cb">
           <property name="enabled">
            <bool>true</bool>
           </property>
@@ -291,7 +298,7 @@
        </layout>
       </item>
       <item>
-       <spacer name="verticalSpacer_6">
+       <spacer name="vSpacer_axis">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
@@ -314,7 +321,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="label_7">
+       <widget class="QLabel" name="selectSlice_label">
         <property name="font">
          <font>
           <pointsize>12</pointsize>
@@ -333,7 +340,7 @@
          <number>0</number>
         </property>
         <item>
-         <spacer name="horizontalSpacer_7">
+         <spacer name="hSpacer_manLeft">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -349,17 +356,21 @@
          </spacer>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit"/>
+         <widget class="QLineEdit" name="lineEdit_slice">
+          <property name="placeholderText">
+           <string>Type custom slice number...</string>
+          </property>
+         </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="loadSlice_button">
           <property name="text">
            <string>Load</string>
           </property>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_6">
+         <spacer name="hSpacer_manRight">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -377,7 +388,7 @@
        </layout>
       </item>
       <item>
-       <spacer name="verticalSpacer_2">
+       <spacer name="vSpacer_man">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
@@ -400,7 +411,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="label_6">
+       <widget class="QLabel" name="footTitle_label">
         <property name="font">
          <font>
           <pointsize>12</pointsize>
@@ -420,7 +431,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_5">
+       <widget class="QLabel" name="icon_label">
         <property name="text">
          <string/>
         </property>

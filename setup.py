@@ -35,7 +35,7 @@ class GuiSetUp(QtWidgets.QMainWindow, GUI.Ui_Form):
 
     def load_mri(self):
         self.vol = nib.load(self.path).get_data()
-        print(f'{self.vol.shape=}')
+        print(f'{self.vol.shape=}, type - {self.vol.dtype}')
         self.sliceSlider.setMaximum(self.vol.shape[2])
         self.sliceSlider.setValue(self.vol.shape[2]/2)
         self.pixmap = conv2QImage(self.vol)

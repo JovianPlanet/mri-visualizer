@@ -7,14 +7,15 @@ from PIL import Image, ImageQt
 
 def conv2QImage(im):
 
-	# height, width, channel = im.shape
-	# bytesPerLine = width
+    # height, width, channel = im.shape
+    # bytesPerLine = width
 
-	img = Image.fromarray(im[:,:,80]).convert('RGB')#.astype(np.uint16))
-	qim = ImageQt.ImageQt(img)
-	pm = QtGui.QPixmap.fromImage(qim)
+    img = Image.fromarray(im[:,:,80]/im.max()*255).convert('RGB')#(im[:,:,80], mode="RGBA")#
+    print(f'PIL tipo - {type(img)}')
+    qim = ImageQt.ImageQt(img)
+    pm = QtGui.QPixmap.fromImage(qim)
 
-	#qimg = QtGui.QImage(im[:,:,100], width, height, bytesPerLine, QtGui.QImage.Format_RGB888)#
-	#pixmap = QtGui.QPixmap.fromImage(im[:,:,100])
+    #qimg = QtGui.QImage(im[:,:,100], width, height, bytesPerLine, QtGui.QImage.Format_RGB888)#
+    #pixmap = QtGui.QPixmap.fromImage(im[:,:,100])
 
-	return pm
+    return pm

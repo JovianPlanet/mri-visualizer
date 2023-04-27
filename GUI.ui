@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>480</width>
-    <height>716</height>
+    <height>742</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <x>9</x>
      <y>20</y>
      <width>451</width>
-     <height>681</height>
+     <height>711</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="vLayout_main">
@@ -127,9 +127,16 @@
      </layout>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="vLayout_load">
+     <widget class="Line" name="line">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="vLayout_browse">
       <property name="topMargin">
-       <number>12</number>
+       <number>0</number>
       </property>
       <item>
        <widget class="QLabel" name="load_label">
@@ -143,15 +150,18 @@
         <property name="text">
          <string>Load volume</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="hLayout_load">
+       <layout class="QHBoxLayout" name="hLayout_browse">
         <property name="topMargin">
          <number>0</number>
         </property>
         <item>
-         <spacer name="hSpacer_loadLeft">
+         <spacer name="hSpacer_browseLeft">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -184,12 +194,83 @@
          </widget>
         </item>
         <item>
-         <spacer name="hSpacer_loadRight">
+         <spacer name="hSpacer_browseRight">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType">
            <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>10</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="hLayout_loadMRI">
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <spacer name="hSpacer_loadMRILeft">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::MinimumExpanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="loadMRI_button">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">border-color: rgb(115, 210, 22);</string>
+          </property>
+          <property name="text">
+           <string>Load MRI</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="hSpacer_loadMRIRight">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::MinimumExpanding</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -212,12 +293,22 @@
         <property name="sizeHint" stdset="0">
          <size>
           <width>20</width>
-          <height>40</height>
+          <height>10</height>
          </size>
         </property>
        </spacer>
       </item>
      </layout>
+    </item>
+    <item>
+     <widget class="Line" name="line_3">
+      <property name="frameShadow">
+       <enum>QFrame::Sunken</enum>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
     </item>
     <item>
      <layout class="QVBoxLayout" name="vLayout_cb">
@@ -241,6 +332,9 @@
         </property>
         <property name="text">
          <string>Select view axis</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
         <property name="margin">
          <number>6</number>
@@ -308,12 +402,22 @@
         <property name="sizeHint" stdset="0">
          <size>
           <width>20</width>
-          <height>20</height>
+          <height>10</height>
          </size>
         </property>
        </spacer>
       </item>
      </layout>
+    </item>
+    <item>
+     <widget class="Line" name="line_4">
+      <property name="frameShadow">
+       <enum>QFrame::Sunken</enum>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
     </item>
     <item>
      <layout class="QVBoxLayout" name="vLayout_manual">
@@ -331,6 +435,9 @@
         </property>
         <property name="text">
          <string>Select slice</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
@@ -398,12 +505,19 @@
         <property name="sizeHint" stdset="0">
          <size>
           <width>20</width>
-          <height>40</height>
+          <height>10</height>
          </size>
         </property>
        </spacer>
       </item>
      </layout>
+    </item>
+    <item>
+     <widget class="Line" name="line_5">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
     </item>
     <item>
      <layout class="QHBoxLayout" name="hLayout_foot">

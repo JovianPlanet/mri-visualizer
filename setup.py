@@ -23,7 +23,11 @@ class GuiSetUp(QtWidgets.QMainWindow, GUI.Ui_Form):
         self.sagital_cb.stateChanged.connect(self.update_gui)
         self.coronal_cb.stateChanged.connect(self.update_gui)
 
+        self.scene = None
+
         self.path = './data/sub-A00028352_ses-NFB3_T1w.nii.gz'
+
+        self.view = ''
 
         self.vol = None
 
@@ -36,22 +40,68 @@ class GuiSetUp(QtWidgets.QMainWindow, GUI.Ui_Form):
     def load_mri(self):
         self.vol = nib.load(self.path).get_data()
         print(f'{self.vol.shape=}, type - {self.vol.dtype}')
-        self.sliceSlider.setMaximum(self.vol.shape[2])
-        self.sliceSlider.setValue(self.vol.shape[2]/2)
-        self.pixmap = conv2QImage(self.vol)
 
-        scene = QtWidgets.QGraphicsScene(0, 0, self.vol.shape[0], self.vol.shape[1])
+        init_slice = 0
 
-        pixmapitem = scene.addPixmap(self.pixmap)
+        if self.axial_cb.isChecked():
+            self.view = 'axial'
+            self.sliceSlider.setMaximum(self.vol.shape[2])
+            self.sliceSlider.setValue(self.vol.shape[2]/2)
+            self.pixmap = conv2QImage(self.vol[:, :, self.sliceSlider.value()])
+        elif self.sagital_cb.isChecked():
+            self.view = 'sagital'
+            self.sliceSlider.setMaximum(self.vol.shape[1])
+            self.sliceSlider.setValue(self.vol.shape[1]/2)
+            self.pixmap = conv2QImage(self.vol[:, self.sliceSlider.value(), :])
+        elif self.coronal_cb.isChecked():
+            self.view = 'coronal'
+            self.sliceSlider.setMaximum(self.vol.shape[0])
+            self.sliceSlider.setValue(self.vol.shape[0]/2)
+            self.pixmap = conv2QImage(self.vol[self.sliceSlider.value(), :, :])
+        else:
+            self.show_message('ERROR: Debe seleccionar una vista antes de cargar la imagen', False)
+            return
+
+        self.scene = QtWidgets.QGraphicsScene(0, 0, self.vol.shape[0], self.vol.shape[1])
+
+        pixmapitem = self.scene.addPixmap(self.pixmap)
         pixmapitem.setPos(0, 0)
 
-        self.graphicsView.setScene(scene)
+        self.graphicsView.setScene(self.scene)
         self.graphicsView.show()
         #app.exec_()
         return
 
     def load_slice(self):
-        pass
+        try:
+            slicenum = int(self.lineEdit_slice.text())
+        except:
+            self.show_message('ERROR: Inserte un valor númerico valido', False)
+            return
+
+        if self.view == 'axial':
+            if slicenum > self.vol.shape[2]:
+                self.show_message('ERROR: El número de slice seleccionado es mayor al número total de slices', False)
+                return
+            self.pixmap = conv2QImage(self.vol[:, :, slicenum])
+        elif self.view == 'sagital':
+            if slicenum > self.vol.shape[1]:
+                self.show_message('ERROR: El número de slice seleccionado es mayor al número total de slices', False)
+                return
+            self.pixmap = conv2QImage(self.vol[:, slicenum, :])
+        elif self.view == 'coronal':
+            if slicenum > self.vol.shape[0]:
+                self.show_message('ERROR: El número de slice seleccionado es mayor al número total de slices', False)
+                return
+            self.pixmap = conv2QImage(self.vol[slicenum, :, :])
+        else:
+            self.show_message('ERROR: Aún no se ha seleccionado una vista', False)
+        pixmapitem = self.scene.addPixmap(self.pixmap)
+        pixmapitem.setPos(0, 0)
+        self.scene.update()
+
+        return
+
 
     def update_gui(self):
 
@@ -79,7 +129,7 @@ class GuiSetUp(QtWidgets.QMainWindow, GUI.Ui_Form):
         dlg = ErrorDialog(self)
         dlg.message.setText(s)
         if dlg.exec():
-            print("Success!")
+            print("Error!")
 
 '''
 app = QApplication(sys.argv)

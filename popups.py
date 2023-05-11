@@ -1,3 +1,4 @@
+from PyQt5 import QtGui, QtCore
 from PyQt5.QtWidgets import QDialog, QPushButton, QDialogButtonBox, QVBoxLayout, QLabel, QMessageBox
 
 

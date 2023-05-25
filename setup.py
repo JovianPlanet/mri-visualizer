@@ -45,20 +45,21 @@ class GuiSetUp(QtWidgets.QMainWindow, GUI.Ui_Form):
 
         init_slice = 0
 
+        # axial (x-y), coronal (x-z) and sagittal (y-z)
         if self.axial_cb.isChecked():
             self.view = 'axial'
             self.sliceSlider.setMaximum(self.vol.shape[2])
             self.sliceSlider.setValue(self.vol.shape[2]/2)
             self.pixmap = conv2QImage(self.vol[:, :, self.sliceSlider.value()])
             self.scene = QtWidgets.QGraphicsScene(0, 0, self.vol.shape[0], self.vol.shape[1])
-        elif self.sagital_cb.isChecked():
-            self.view = 'sagital'
+        elif self.coronal_cb.isChecked():
+            self.view = 'coronal'
             self.sliceSlider.setMaximum(self.vol.shape[1])
             self.sliceSlider.setValue(self.vol.shape[1]/2)
             self.pixmap = conv2QImage(self.vol[:, self.sliceSlider.value(), :])
             self.scene = QtWidgets.QGraphicsScene(0, 0, self.vol.shape[0], self.vol.shape[2])
-        elif self.coronal_cb.isChecked():
-            self.view = 'coronal'
+        elif self.sagital_cb.isChecked():
+            self.view = 'sagital'
             self.sliceSlider.setMaximum(self.vol.shape[0])
             self.sliceSlider.setValue(self.vol.shape[0]/2)
             self.pixmap = conv2QImage(self.vol[self.sliceSlider.value(), :, :])

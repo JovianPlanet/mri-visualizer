@@ -4,7 +4,7 @@ import numpy as np
 from PyQt5 import QtWidgets, QtCore
 from popups import ErrorDialog
 import GUI
-from utils import conv2QImage, RAS_orientation
+from utils import conv2QImage, RAS_orientation, pad_img
 
 
 class GuiSetUp(QtWidgets.QMainWindow, GUI.Ui_Form):
@@ -23,6 +23,8 @@ class GuiSetUp(QtWidgets.QMainWindow, GUI.Ui_Form):
         self.coronal_cb.stateChanged.connect(self.update_gui)
 
         self.scene = None
+        self.width = self.graphicsView.geometry().width()
+        self.height = self.graphicsView.geometry().height()
 
         self.path = './data/sub-A00028352_ses-NFB3_T1w.nii.gz'
 
@@ -44,31 +46,41 @@ class GuiSetUp(QtWidgets.QMainWindow, GUI.Ui_Form):
         mri = RAS_orientation(nib.load(self.path)) # Orient image to RAS
         print(f'Orientacion swapped:\n{nib.aff2axcodes(mri.affine)}\n')
         self.vol = mri.get_data()
-        print(f'{self.vol.shape=}, type - {self.vol.dtype}')
 
-        init_slice = 0
+        print(f'{self.width}, {self.height}')
+        self.width = self.graphicsView.geometry().width()
+        self.height = self.graphicsView.geometry().height()
 
-        self.scene = QtWidgets.QGraphicsScene(0, 0, self.vol.shape[0], self.vol.shape[1])
+        # self.scene = QtWidgets.QGraphicsScene(0, 0, self.vol.shape[0], self.vol.shape[1])
+        self.scene = QtWidgets.QGraphicsScene(0, 0, self.width, self.height)
 
         # axial (x-y), coronal (x-z) and sagittal (y-z)
         if self.axial_cb.isChecked():
             self.view = 'axial'
             self.sliceSlider.setMaximum(self.vol.shape[2])
             self.sliceSlider.setValue(self.vol.shape[2]/2)
-            self.pixmap = conv2QImage(self.vol[:, :, self.sliceSlider.value()])
-            #self.scene = QtWidgets.QGraphicsScene(0, 0, self.vol.shape[0], self.vol.shape[1])
+            im = self.vol[:, :, self.sliceSlider.value()]
+            im = pad_img(im, self.width, self.height)
+            self.pixmap = conv2QImage(im)
+
         elif self.coronal_cb.isChecked():
             self.view = 'coronal'
             self.sliceSlider.setMaximum(self.vol.shape[1])
             self.sliceSlider.setValue(self.vol.shape[1]/2)
-            self.pixmap = conv2QImage(self.vol[:, self.sliceSlider.value(), :])
-            #self.scene = QtWidgets.QGraphicsScene(0, 0, self.vol.shape[0], self.vol.shape[2])
+            # self.pixmap = conv2QImage(self.vol[:, self.sliceSlider.value(), :])
+            im = self.vol[:, self.sliceSlider.value(), :]
+            im = pad_img(im, self.width, self.height)
+            self.pixmap = conv2QImage(im)
+
         elif self.sagital_cb.isChecked():
             self.view = 'sagital'
             self.sliceSlider.setMaximum(self.vol.shape[0])
             self.sliceSlider.setValue(self.vol.shape[0]/2)
-            self.pixmap = conv2QImage(self.vol[self.sliceSlider.value(), :, :])
-            #self.scene = QtWidgets.QGraphicsScene(0, 0, self.vol.shape[1], self.vol.shape[2])
+            # self.pixmap = conv2QImage(self.vol[self.sliceSlider.value(), :, :])
+            im = self.vol[self.sliceSlider.value(), :, :]
+            im = pad_img(im, self.width, self.height)
+            self.pixmap = conv2QImage(im)
+
         else:
             self.show_message('ERROR: Debe seleccionar una vista antes de cargar la imagen', False)
             return
@@ -112,17 +124,23 @@ class GuiSetUp(QtWidgets.QMainWindow, GUI.Ui_Form):
             if s > self.vol.shape[2]:
                 self.show_message('ERROR: El número de slice seleccionado es mayor al número total de slices', False)
                 return
-            self.pixmap = conv2QImage(self.vol[:, :, s])
+            # self.pixmap = conv2QImage(self.vol[:, :, s])
+            self.pixmap = conv2QImage(pad_img(self.vol[:, :, s], self.width, self.height))
+
         elif self.view == 'coronal':
             if s > self.vol.shape[1]:
                 self.show_message('ERROR: El número de slice seleccionado es mayor al número total de slices', False)
                 return
-            self.pixmap = conv2QImage(self.vol[:, s, :])
+            # self.pixmap = conv2QImage(self.vol[:, s, :])
+            self.pixmap = conv2QImage(pad_img(self.vol[:, s, :], self.width, self.height))
+
         elif self.view == 'sagital':
             if s > self.vol.shape[0]:
                 self.show_message('ERROR: El número de slice seleccionado es mayor al número total de slices', False)
                 return
-            self.pixmap = conv2QImage(self.vol[s, :, :])
+            # self.pixmap = conv2QImage(self.vol[s, :, :])
+            self.pixmap = conv2QImage(pad_img(self.vol[s, :, :], self.width, self.height))
+            
         else:
             self.show_message('ERROR: Aún no se ha seleccionado una vista', False)
         pixmapitem = self.scene.addPixmap(self.pixmap)

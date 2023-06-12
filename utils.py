@@ -68,3 +68,11 @@ def RAS_orientation(tgt_obj): #(pathtgt, pathout):
     # nib.save(img_orient, pathout)
 
     return img_orient
+
+def pad_img(im, width, height):
+
+    tupla_width = (int((width - im.shape[0]) / 2), int((width - im.shape[0]) / 2))
+    tupla_height = (int((height - im.shape[1]) / 2), int((height - im.shape[1]) / 2))
+    im = np.pad(im, (tupla_width, tupla_height))
+
+    return im

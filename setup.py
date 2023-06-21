@@ -45,7 +45,7 @@ class GuiSetUp(QtWidgets.QMainWindow, GUI.Ui_Form):
 
         mri = RAS_orientation(nib.load(self.path)) # Orient image to RAS
         print(f'Orientacion swapped:\n{nib.aff2axcodes(mri.affine)}\n')
-        self.vol = mri.get_data()
+        self.vol = mri.get_fdata()
 
         gview_w = self.graphicsView.geometry().width()
         gview_h = self.graphicsView.geometry().height()
@@ -54,21 +54,21 @@ class GuiSetUp(QtWidgets.QMainWindow, GUI.Ui_Form):
         if self.axial_cb.isChecked():
             self.view = 'axial'
             self.sliceSlider.setMaximum(self.vol.shape[2])
-            self.sliceSlider.setValue(self.vol.shape[2]/2)
+            self.sliceSlider.setValue(int(self.vol.shape[2]/2))
             im = self.vol[:, :, self.sliceSlider.value()]
             self.width, self.height = set_dims(gview_w, self.vol.shape[0], gview_h, self.vol.shape[1])
 
         elif self.coronal_cb.isChecked():
             self.view = 'coronal'
             self.sliceSlider.setMaximum(self.vol.shape[1])
-            self.sliceSlider.setValue(self.vol.shape[1]/2)
+            self.sliceSlider.setValue(int(self.vol.shape[1]/2))
             im = self.vol[:, self.sliceSlider.value(), :]
             self.width, self.height = set_dims(gview_w, self.vol.shape[0], gview_h, self.vol.shape[2])
 
         elif self.sagital_cb.isChecked():
             self.view = 'sagital'
             self.sliceSlider.setMaximum(self.vol.shape[0])
-            self.sliceSlider.setValue(self.vol.shape[0]/2)
+            self.sliceSlider.setValue(int(self.vol.shape[0]/2))
             im = self.vol[self.sliceSlider.value(), :, :]
             self.width, self.height = set_dims(gview_w, self.vol.shape[1], gview_h, self.vol.shape[2])
 

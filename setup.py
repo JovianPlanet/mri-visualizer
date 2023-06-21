@@ -35,7 +35,7 @@ class GuiSetUp(QtWidgets.QMainWindow, GUI.Ui_Form):
     # Función que captura la ruta donde se encuentra la imagen
     def get_path(self):
 
-        self.path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Open File", "Images (*.nii *.nii.gz)")
+        self.path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Open File")#, "Images (*.nii *.nii.gz)")
         self.path_edit.setText(self.path)
         return
 

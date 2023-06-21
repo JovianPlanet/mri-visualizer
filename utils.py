@@ -76,3 +76,16 @@ def pad_img(im, width, height):
     im = np.pad(im, (tupla_width, tupla_height))
 
     return im
+
+def set_dims(view_w, vol_w, view_h, vol_h):
+
+    if view_w > vol_w:
+        w = view_w
+    else:
+        w = vol_w
+    if view_h > vol_h:
+        h = view_h
+    else:
+        h = vol_h
+
+    return w, h

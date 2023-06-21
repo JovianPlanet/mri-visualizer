@@ -4,7 +4,7 @@ import numpy as np
 from PyQt5 import QtWidgets, QtCore
 from popups import ErrorDialog
 import GUI
-from utils import conv2QImage, RAS_orientation, pad_img
+from utils import conv2QImage, RAS_orientation, pad_img, set_dims
 
 
 class GuiSetUp(QtWidgets.QMainWindow, GUI.Ui_Form):
@@ -47,12 +47,8 @@ class GuiSetUp(QtWidgets.QMainWindow, GUI.Ui_Form):
         print(f'Orientacion swapped:\n{nib.aff2axcodes(mri.affine)}\n')
         self.vol = mri.get_data()
 
-        print(f'{self.width}, {self.height}')
-        self.width = self.graphicsView.geometry().width()
-        self.height = self.graphicsView.geometry().height()
-
-        # self.scene = QtWidgets.QGraphicsScene(0, 0, self.vol.shape[0], self.vol.shape[1])
-        self.scene = QtWidgets.QGraphicsScene(0, 0, self.width, self.height)
+        gview_w = self.graphicsView.geometry().width()
+        gview_h = self.graphicsView.geometry().height()
 
         # axial (x-y), coronal (x-z) and sagittal (y-z)
         if self.axial_cb.isChecked():
@@ -60,30 +56,30 @@ class GuiSetUp(QtWidgets.QMainWindow, GUI.Ui_Form):
             self.sliceSlider.setMaximum(self.vol.shape[2])
             self.sliceSlider.setValue(self.vol.shape[2]/2)
             im = self.vol[:, :, self.sliceSlider.value()]
-            im = pad_img(im, self.width, self.height)
-            self.pixmap = conv2QImage(im)
+            self.width, self.height = set_dims(gview_w, self.vol.shape[0], gview_h, self.vol.shape[1])
 
         elif self.coronal_cb.isChecked():
             self.view = 'coronal'
             self.sliceSlider.setMaximum(self.vol.shape[1])
             self.sliceSlider.setValue(self.vol.shape[1]/2)
-            # self.pixmap = conv2QImage(self.vol[:, self.sliceSlider.value(), :])
             im = self.vol[:, self.sliceSlider.value(), :]
-            im = pad_img(im, self.width, self.height)
-            self.pixmap = conv2QImage(im)
+            self.width, self.height = set_dims(gview_w, self.vol.shape[0], gview_h, self.vol.shape[2])
 
         elif self.sagital_cb.isChecked():
             self.view = 'sagital'
             self.sliceSlider.setMaximum(self.vol.shape[0])
             self.sliceSlider.setValue(self.vol.shape[0]/2)
-            # self.pixmap = conv2QImage(self.vol[self.sliceSlider.value(), :, :])
             im = self.vol[self.sliceSlider.value(), :, :]
-            im = pad_img(im, self.width, self.height)
-            self.pixmap = conv2QImage(im)
+            self.width, self.height = set_dims(gview_w, self.vol.shape[1], gview_h, self.vol.shape[2])
 
         else:
             self.show_message('ERROR: Debe seleccionar una vista antes de cargar la imagen', False)
             return
+
+        im = pad_img(im, self.width, self.height)
+        self.pixmap = conv2QImage(im)
+
+        self.scene = QtWidgets.QGraphicsScene(0, 0, self.width, self.height)
 
         pixmapitem = self.scene.addPixmap(self.pixmap)
         pixmapitem.setPos(0, 0)

@@ -75,6 +75,8 @@ def pad_img(im, width, height):
     tupla_height = (int((height - im.shape[1]) / 2), int((height - im.shape[1]) / 2))
     im = np.pad(im, (tupla_width, tupla_height))
 
+    print(f'tupla w={tupla_width}, tupla h={tupla_height}')
+
     return im
 
 def set_dims(view_w, vol_w, view_h, vol_h):
@@ -87,5 +89,7 @@ def set_dims(view_w, vol_w, view_h, vol_h):
         h = view_h
     else:
         h = vol_h
+
+    print(f'w={w}, h={h}')
 
     return w, h

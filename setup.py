@@ -45,13 +45,12 @@ class GuiSetUp(QtWidgets.QMainWindow, GUI.Ui_Form):
 
         mri = RAS_orientation(nib.load(self.path)) # Orient image to RAS
         print(f'Orientacion swapped:\n{nib.aff2axcodes(mri.affine)}\n')
-        
 
         try:
             self.vol = mri.get_fdata().squeeze(3)
         except:
             self.vol = mri.get_fdata()
-            
+
         print(self.vol.shape)
 
         gview_w = self.graphicsView.geometry().width()
@@ -95,6 +94,7 @@ class GuiSetUp(QtWidgets.QMainWindow, GUI.Ui_Form):
 
         self.graphicsView.setScene(self.scene)
         self.graphicsView.show()
+
         return
 
     # Función para cargar el slice, especificado en el campo de texto, al presionar el botón 'Load'
@@ -146,6 +146,7 @@ class GuiSetUp(QtWidgets.QMainWindow, GUI.Ui_Form):
             
         else:
             self.show_message('ERROR: Aún no se ha seleccionado una vista', False)
+
         pixmapitem = self.scene.addPixmap(self.pixmap)
         pixmapitem.setPos(0, 0)
         self.scene.update()

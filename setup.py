@@ -45,7 +45,14 @@ class GuiSetUp(QtWidgets.QMainWindow, GUI.Ui_Form):
 
         mri = RAS_orientation(nib.load(self.path)) # Orient image to RAS
         print(f'Orientacion swapped:\n{nib.aff2axcodes(mri.affine)}\n')
-        self.vol = mri.get_fdata()
+        
+
+        try:
+            self.vol = mri.get_fdata().squeeze(3)
+        except:
+            self.vol = mri.get_fdata()
+            
+        print(self.vol.shape)
 
         gview_w = self.graphicsView.geometry().width()
         gview_h = self.graphicsView.geometry().height()

@@ -22,15 +22,20 @@ class GuiSetUp(QtWidgets.QMainWindow, GUI.Ui_Form):
         self.sagital_cb.stateChanged.connect(self.update_gui)
         self.coronal_cb.stateChanged.connect(self.update_gui)
 
-        self.scene = None
         self.width = self.graphicsView.geometry().width()
         self.height = self.graphicsView.geometry().height()
+
+        self.scene = QtWidgets.QGraphicsScene(0, 0, self.width, self.height)
+
 
         self.path = './data/sub-A00028352_ses-NFB3_T1w.nii.gz'
 
         self.view = ''
 
         self.vol = None
+
+        self.graphicsView.setScene(self.scene)
+        self.graphicsView.show()
 
     # Función que captura la ruta donde se encuentra la imagen
     def get_path(self):
@@ -85,7 +90,11 @@ class GuiSetUp(QtWidgets.QMainWindow, GUI.Ui_Form):
         im = pad_img(im, self.width, self.height)
         self.pixmap = conv2QImage(im)
 
-        self.scene = QtWidgets.QGraphicsScene(0, 0, self.width, self.height)
+        for item in self.scene.items():
+            self.scene.removeItem(item)
+            print(item)
+
+        self.scene.setSceneRect(0, 0, self.width, self.height)
 
         pixmapitem = self.scene.addPixmap(self.pixmap)
         pixmapitem.setPos(0, 0)
@@ -93,7 +102,9 @@ class GuiSetUp(QtWidgets.QMainWindow, GUI.Ui_Form):
         #self.graphicsView.fitInView(pixmapitem, QtCore.Qt.KeepAspectRatio)
 
         self.graphicsView.setScene(self.scene)
-        self.graphicsView.show()
+        # self.graphicsView.show()
+
+        self.scene.update()
 
         return
 
